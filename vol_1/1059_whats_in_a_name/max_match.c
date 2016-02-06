@@ -1,0 +1,92 @@
+#include <stdio.h>
+int strechroad(int match[][3],int *mstate,int len,int *road,int lr){
+  int i,j;
+  if(!mstate[road[lr-1]]){
+    mstate[road[0]]=1;
+    mstate[road[lr-1]]=1;
+    for(i=0;i<lr-1;i++){
+      if(i%2){
+	for(j=0;j<len;j++){
+	  if(match[j][0]==road[i]&&match[j][1]==road[i+1])
+	    match[j][2]=0;
+	}
+      }
+      else{
+	for(j=0;j<len;j++){
+	  if(match[j][0]==road[i]&&match[j][1]==road[i+1])
+	    match[j][2]=1;
+	}
+      }
+    }
+    return 1;
+  }
+  for(i=0;i<len;i++){
+    if(match[i][2]&&match[i][0]==road[lr-1]){
+      for(j=0;j<len;j++){
+	if(!match[j][2]&&match[j][0]==match[i][1]){
+	  road[lr]=match[j][0];
+	  road[lr+1]=match[j][1];
+	  lr+=2;
+	  match[i][2]=match[j][2]=1;
+	  if( strechroad(match,mstate,len,road,lr) ){
+	    return 1;
+	  }
+	  match[i][2]=match[j][2]=1;
+	  lr-=2;
+	}
+      }
+    }
+  }
+  return 0;
+}
+int max_match(int op[][2],int n){
+  int match[400][3];
+  int mstate[20];
+  int len=0;
+  int i,j;
+  int check;
+  int road[20];
+  int lr=0;
+  int sum;
+  for(i=0;i<n;i++){
+    mstate[i]=0;
+    for(j=0;j<n;j++){
+      if(op[i][j]){
+        match[len][0]=i;
+	match[len][1]=j;
+	match[len][2]=0;
+	len++;
+      }
+    }
+  }
+  check=1;
+  while(check){
+    check=0;
+    for(i=0;i<len;i++){
+      if(!match[i][2]&&!mstate[match[i][0]]){
+	road[0]=match[i][0];
+	road[1]=match[i][1];
+	match[i][2]=1;
+	lr=2;
+	if(!strechroad(match,mstate,len,road,lr)){
+	  match[i][2]=0;
+	}
+	else{
+	  check++;
+	}
+      }
+    }
+  }
+  for(i=0;i<n;i++){
+    if(mstate[i])
+      sum++;
+  }
+  return sum;
+}
+
+int main(){
+  int op[2][2]={1,0,0,0};
+  int n=2;
+  printf("%d",max_match(op,n));
+  return 0;
+}

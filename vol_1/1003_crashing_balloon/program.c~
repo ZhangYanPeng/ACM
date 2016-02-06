@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+int aTrue, bTrue; 
+int judge(int m, int n, int p) 
+{ 
+    if(aTrue) return 0;
+    if(m == 1 && n == 1)         //两个队员的分数都是正确的
+    {
+        aTrue = 1; return 0;    // aTrue是赢家
+    }
+    if(n == 1) bTrue = 1;    //如果n正确，bTrue就是赢家
+    while(p > 1)
+    {
+        if(m%p == 0) judge(m/p, n, p-1);
+        if(n%p == 0) judge(m, n/p, p-1);
+        p--;
+    }
+    return 0;
+}
+   
+int main()
+{
+    int a, b; 
+    while(scanf("%d%d", &a, &b)!=EOF)
+    {
+        if(a < b)                        //如果a < b，交换
+            {int temp = a; a = b; b = temp;}    
+        aTrue = 0; bTrue = 0;    //aTrue和bTrue的初值
+        judge(a, b, 100);
+        if(!aTrue && bTrue)                // aTrue不成立 ，bTrue成立
+            printf("%d\n",b);            //输出b
+        else
+            printf("%d\n",a);            //否则输出a
+    }
+    return 0;
+}

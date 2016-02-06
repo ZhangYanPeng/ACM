@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+int main(){
+  int ca,cb,g;
+  int tmp1, tmp2;
+  int t;
+  while(scanf("%d %d %d",&ca,&cb,&g) != EOF  ){
+    if(cb==g){
+      printf("fill B\n");
+      printf("success\n");
+      break;
+    }
+    tmp2=g%ca;
+    if(tmp2==0){
+      for(t=0;t<g/ca;t++){
+	printf("fill A\n");
+	printf("pour A B\n");
+      }
+      printf("success\n");
+      break;
+    }
+    tmp1=0;
+    while(tmp1!=tmp2){
+      if( ((tmp1+cb)%ca)==tmp2 ){
+	printf("pour B A\n");
+	printf("fill B\n");
+	for(t=0;t<((cb-ca+tmp1-g)/ca+1);t++){
+	  printf("pour B A\n");
+	  if(t!=(cb-ca+tmp1-g)/ca)
+	    printf("empty A\n");
+	}
+	printf("success\n");
+	break;
+      }
+      else{
+	if(tmp1)
+	  printf("pour B A\n");
+	printf("fill B\n");
+	for(t=0;t<(cb+tmp1)/ca;t++){
+	  printf("pour B A\n");
+	  printf("empty A\n");
+	}
+	tmp1 = (cb+tmp1)%ca;
+      }
+    }
+  }
+
+  return 0;
+}

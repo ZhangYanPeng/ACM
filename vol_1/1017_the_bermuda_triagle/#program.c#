@@ -1,0 +1,8 @@
+#include <stdio.h>
+
+int main(){
+  int i;
+  for(i=0;i<2<<26;i++)
+    printf("%d",state[i]);
+  return 0;
+}

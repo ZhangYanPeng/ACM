@@ -1,0 +1,47 @@
+#include <stdio.h>
+int pos;
+char tree[1000];
+struct node{
+  struct node *left, *right;
+  char c;
+};
+
+struct node* construct_tree(){
+  struct node* root = (struct node*)malloc(sizeof(struct node));
+  root->c=tree[pos];
+  pos++;
+  if(root->c>='A'&&root->c<='Z'){
+    root->left=NULL;
+    root->right=NULL;
+    return root;
+  }
+  else{
+    root->left==construct_tree();
+    root->right==construct_tree();
+  }
+  return NULL;
+}
+
+void destroy_tree(struct node *p){
+  if(p){
+    if(p->left)
+      destroy_tree(p->left);
+    if(p->right)
+      destroy_tree(p->right);
+    free(p);
+  }
+  return;
+}
+
+int main(){
+  int n;
+  struct node* tr;
+  scanf("%d",&n);
+  while(n>0){
+    n--;
+    scanf("%s",tree);
+    tr = construct_tree();
+    destroy_tree(tr);
+  }
+  return 0;
+}

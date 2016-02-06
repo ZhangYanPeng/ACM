@@ -1,0 +1,79 @@
+#include <stdio.h>
+int translate(char* s){
+  int i;
+  int re=0;
+  for(i=0;i<8;i++){
+    re = re<<1 | (s[i]-'0');
+  }
+  return re;
+}
+
+int main(){
+  int instr[32];
+  int pc,ti;
+  int accu;
+  int i;
+  char in[9];
+  int ter;
+  while(1){
+    if(scanf("%s",in)==EOF)
+      break;
+    instr[0] = translate(in);
+    for(i=1;i<32;i++){
+      scanf("%s",in);
+      instr[i] = translate(in);
+    }
+    pc=0;
+    accu=0;
+    do{
+      ter = 1;
+      ti = instr[pc];
+      pc++;
+      pc %= 32;
+      switch(ti>>5){
+      case 0:{
+	i = ti%32;
+	instr[i] = accu;
+	break;
+      }
+      case 1:{
+	accu = instr[ti%32];
+	break;
+      }
+      case 2:{
+	if(!accu)
+	  pc = ti%32;
+	break;
+      }
+      case 3:{
+	break;
+      }
+      case 4:{
+	accu--;
+	if(accu<0)
+	  accu+=256;
+	else accu %= 256;
+	break;
+      }
+      case 5:{
+	accu++;
+	accu %= 256;
+	break;
+      }
+      case 6:{
+	pc = ti%32;
+	break;
+      }
+      case 7:{
+	ter = 0;
+	break;
+      }
+      }
+    }while(ter);
+    for(i=7;i>=0;i--){
+      printf("%d",accu>>i&1);
+    }
+    printf("\n");
+  }
+  return 0;
+}

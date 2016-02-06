@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main()
+{
+    int j;
+    float key;
+    while(scanf("%f",&key)!=EOF && key!=0.00)
+    {
+        for(j=2;j<=277;j++)
+        {
+            key -= 1.0/j;
+            if(key<=0.0)
+                break;
+        }
+        printf("%d card(s)/n",j-1);
+    }    
+}

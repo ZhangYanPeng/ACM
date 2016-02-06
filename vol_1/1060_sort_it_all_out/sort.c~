@@ -1,0 +1,85 @@
+#include "stdio.h"
+
+int main(){
+  int a[26][26];
+  int m,n;
+  char result[27];
+  int i,j,k,p;
+  char re[4];
+  int csig,check;
+  int complish;
+  while(1){
+    scanf("%d %d",&m,&n);
+    if(!m&&!n)
+      break;
+    for(i=0;i<m;i++)
+      for(j=0;j<m;j++)
+	a[i][j]=0;
+    complish=0;
+    for(i=0;i<n;i++){
+      scanf("%s",re);
+      if(complish)
+	continue;
+      if(!a[re[0]-'A'][re[2]-'A']){
+	a[re[0]-'A'][re[2]-'A']=1;
+      }
+      csig = 0;
+      check = 1;
+      while(check){
+	check = 0;
+	for(j=0;j<m;j++){
+	  for(k=0;k<m;k++){
+	    if(a[j][k]){
+	      for(p=0;p<m;p++){
+		if(a[k][p] && (a[k][p]+a[j][k])>a[j][p]){
+		  a[j][p]=a[k][p]+a[j][k];
+		  check++;
+		  if(a[j][p]>=m){
+		    csig ++;
+		    break;
+		  }
+		}
+	      }
+	    }
+	    if(csig)
+	      break;
+	  }
+	  if(csig)
+	    break;
+	}
+	if(csig)
+	  break;
+      }
+      if(csig){
+	printf("Inconsistency found after %d relations.\n",i+1);
+	complish++;
+      }
+      else{
+	j=0;
+	k=0;
+	while(j<m){
+	  k=0;
+	  while(k<m && a[j][k]!=m-1)
+	    k++;
+	  if(k<m && a[j][k]==m-1)
+	    break;
+	  j++;
+	}
+	if(j>=m&&i==n-1){
+	  printf("Sorted sequence cannot be determined.\n");
+	  complish++;
+	}
+	else if(j<m){
+	  printf("Sorted sequence determined after %d relations: ",i+1);
+	  for(p=0;p<m;p++){
+	    result[a[j][p]] = p+'A';
+	  }
+	  result[m]='\0';
+	  printf("%s",result);
+	  printf("\n");
+	  complish++;
+	}
+      }
+    }
+  }
+}

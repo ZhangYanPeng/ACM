@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <math.h>
+int main(){
+  int ne;
+  int n;
+  int i,j,k,r;
+  int encry[3][26];
+  char c[10000];
+  int testn;
+  int count;
+  int tmp;
+  ne=1;
+  while(1){
+    scanf("%d",&n);
+    if(!n)
+      break;
+    printf("Enigma %d:",ne);
+    for(i=0;i<3;i++){
+      scanf("%s",c);
+      for(j=0;j<n;j++){
+	encry[i][j] = c[j]-'A'-j;
+      }
+    }
+    count=0;
+    scanf("%d",&testn);
+    for(i=0;i<testn;i++){
+      printf("\n");
+      scanf("%s",c);
+      j=0;
+      while(c[j]!='\0'){
+	for(k=2;k>=0;k--){
+	  tmp=count/(pow(n,k));
+	  tmp=tmp%n;
+	  printf("%d--\n",tmp);
+	  //  printf("%c ",c[j]);
+	  for(r=0;r<n;r++){
+	    if(c[j] == ((r+encry[k][(r-tmp+n)%n]+n)%n+'A')){
+	      c[j] = 'A'+ r;
+	      break;
+	    }
+	  }
+	  //	  printf(" %c: %d %d \n",c[j],k,tmp);
+	}
+	count++;
+	j++;
+      }
+      printf("%s",c);
+    }
+  }
+  return 0;
+}

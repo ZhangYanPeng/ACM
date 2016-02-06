@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+int height,width;
+int pos[55][2];
+int rect[11][11];
+long long num;
+
+void fill(int i){
+  int x,y;
+  if(!i)
+    x=y=0;
+  else{
+    y=pos[i-1][0];
+    x=pos[i-1][1];
+    while(rect[y][x]&&x<width&&y<height){
+      if(x==width-1){
+	x=0;
+	y++;
+      }
+      else{
+	x++;
+      }
+    }
+    if(y>=height){
+      num++;
+      return;
+    }
+  }
+  if(x<width-1 && !rect[y][x+1]){
+    pos[i][0]=y;
+    pos[i][1]=x;
+    rect[y][x]=1;
+    rect[y][x+1]=1;
+    fill(i+1);
+    rect[y][x]=0;
+    rect[y][x+1]=0;
+  }
+  if(y<height-1 && !rect[y+1][x]){
+    pos[i][0]=y;
+    pos[i][1]=x;
+    rect[y][x]=1;
+    rect[y+1][x]=1;
+    fill(i+1);
+    rect[y][x]=0;
+    rect[y+1][x]=0;
+  }
+}
+
+int main(){
+  int i,j;
+  while(1){
+    scanf("%d %d",&height,&width);
+    if(!height&&!width)
+      break;
+    if(height%2&&width%2)
+      printf("0\n");
+    else{
+      num=0;
+      for(i=0;i<11;i++)
+	for(j=0;j<11;j++)
+	  rect[i][j]=0;
+      fill(0);
+      printf("%lld\n",num);
+    }
+  }
+  return 0;
+}
